@@ -15,7 +15,15 @@ import Home from "./pages/shopping-view/Home";
 import Listing from "./pages/shopping-view/Listing";
 import Checkout from "./pages/shopping-view/Checkout";
 import Account from "./pages/shopping-view/Account";
+import CheckAuth from "./components/common/CheckAuth";
+import UnAuthPage from "./pages/unauth-page/Index";
 function App() {
+const isAuthenticated = true
+ const user = {
+  name : 'nabiha',
+  role :'admin'
+ }
+
   return (
     <Box
       sx={{
@@ -27,25 +35,40 @@ function App() {
     >
       <Routes>
         {/* Parent route with Layout as a wrapper */}
-        <Route path="/auth" element={<Layout />}>
+        <Route path="/auth" element={
+          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <Layout/>
+          </CheckAuth>
+        }>
           <Route path="login" element={<Login />} />{" "}
           {/* Child route for login */}
           <Route path="register" element={<Register />} />{" "}
           {/* Child route for register */}
         </Route>
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={ 
+          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+          <AdminLayout/>
+        </CheckAuth>
+        }>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="products" element={<Products />} />
           <Route path="orders" element={<Orders />} />
           <Route path="features" element={<Features />} />
         </Route>
-        <Route path="/shop" element={<ShoppingLayout />}>
+        <Route path="/shop" element={
+          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+          <ShoppingLayout/>
+        </CheckAuth>
+        }>
           <Route path="home" element={<Home />} />
           <Route path="listing" element={<Listing />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="account" element={<Account />} />
         </Route>
+     
+        <Route path="/unauth-page" element={<UnAuthPage />} />
         <Route path="*" element={<PageNotFound />} />
+
       </Routes>
     </Box>
   );
