@@ -24,22 +24,25 @@ const Login = () => {
       .then((data) => {
         if (data?.payload?.success) {
           setSnackbarMessage("Login successful! Redirecting...");
-
           setOpenSnackbar(true);
+
           setTimeout(() => {
-            navigate("/shop/home"); 
+            navigate("/shop/home");
           }, 2000);
         } else {
+          // Backend se message directly le liya
           const errorMessage =
             data?.payload?.message || "Login failed! Please try again.";
           setSnackbarMessage(errorMessage);
-
           setOpenSnackbar(true);
         }
-        console.log(data);
       })
       .catch((error) => {
-        setSnackbarMessage("Something went wrong. Please try again.");
+        // Backend error ka message le liya agar available ho toh
+        const errorMessage =
+          error?.response?.data?.message ||
+          "Something went wrong. Please try again.";
+        setSnackbarMessage(errorMessage);
         setOpenSnackbar(true);
         console.error(error);
       });
